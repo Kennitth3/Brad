@@ -2,6 +2,7 @@
 // Initialize Game Engine
 // -------------------------
 const engine = new GameEngine();
+window.engine = engine; // Make global so editor functions can access it
 
 // -------------------------
 // Load Default Assets
@@ -15,10 +16,9 @@ function loadDefaultAssets() {
 
   defaultAssets.forEach((asset) => engine.loadAsset(asset.name, asset.path));
 
-  // Wait a short time to ensure images load
   setTimeout(() => {
-    window.createEditors(engine);       // Setup player & map editors
-    window.setupFileUploads(engine);    // Setup file upload inputs
+    window.createEditors(engine);
+    window.setupFileUploads(engine);
   }, 500);
 }
 
@@ -26,37 +26,24 @@ function loadDefaultAssets() {
 document.getElementById("load-assets").addEventListener("click", loadDefaultAssets);
 
 // -------------------------
-// Drag & Drop Images to Canvas
+// Canvas Drag & Drop for Assets
 // -------------------------
-function enableCanvasDragDrop() {
-  const canvas = engine.canvas;
+const canvas = engine.canvas;
 
-  canvas.addEventListener("dragover", (e) => e.preventDefault());
+canvas.addEventListener("dragover", (e) => e.preventDefault());
 
-  canvas.addEventListener("drop", (e) => {
-    e.preventDefault();
-    const files = Array.from(e.dataTransfer.files);
+canvas.addEventListener("drop", (e) => {
+  e.preventDefault();
 
-    files.forEach((file) => {
-      if (!file.type.startsWith("image/")) return;
+  const assetName = e.dataTransfer.getData("text/plain");
+  if (!assetName || !engine.assets[assetName]) return;
 
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const img = new Image();
-        img.src = event.target.result;
-        const name = file.name.split(".")[0];
-        engine.assets[name] = img;
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
 
-        // Refresh the map editor asset panel
-        window.createEditors(engine);
-      };
-      reader.readAsDataURL(file);
-    });
-  });
-}
-
-// Enable drag & drop immediately
-enableCanvasDragDrop();
+  engine.createEntity("tile", x, y, assetName);
+});
 
 // -------------------------
 // Map Save / Load
@@ -91,13 +78,12 @@ function loadMap(file) {
 
 // Map tab UI connections
 document.getElementById("save-map").addEventListener("click", saveMap);
-
 document.getElementById("load-map").addEventListener("change", (e) => {
   if (!e.target.files.length) return;
   loadMap(e.target.files[0]);
 });
 
 // -------------------------
-// Start the Game Loop
+// Start Game Loop
 // -------------------------
 engine.start();
