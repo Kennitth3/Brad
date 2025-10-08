@@ -1,9 +1,10 @@
-// Make sure GameEngine, createEditors, setupFileUploads are already loaded globally
-
+// -------------------------
+// Initialize Game Engine
+// -------------------------
 const engine = new GameEngine();
 
 // -------------------------
-// Helper: Load default assets
+// Load Default Assets
 // -------------------------
 function loadDefaultAssets() {
   const defaultAssets = [
@@ -14,19 +15,22 @@ function loadDefaultAssets() {
 
   defaultAssets.forEach((asset) => engine.loadAsset(asset.name, asset.path));
 
+  // Wait a short time to ensure images load
   setTimeout(() => {
-    createEditors(engine);
-    setupFileUploads(engine);
+    createEditors(engine);       // Setup player & map editors
+    setupFileUploads(engine);    // Setup file upload inputs
   }, 500);
 }
 
+// Button to load default assets
+document.getElementById("load-assets").addEventListener("click", loadDefaultAssets);
+
 // -------------------------
-// Drag & Drop for user images
+// Drag & Drop Images to Canvas
 // -------------------------
 function enableCanvasDragDrop() {
   const canvas = engine.canvas;
 
-  // Allow dropping files on the canvas
   canvas.addEventListener("dragover", (e) => e.preventDefault());
 
   canvas.addEventListener("drop", (e) => {
@@ -43,7 +47,7 @@ function enableCanvasDragDrop() {
         const name = file.name.split(".")[0];
         engine.assets[name] = img;
 
-        // Refresh asset panel in the map editor
+        // Refresh the map editor asset panel
         createEditors(engine);
       };
       reader.readAsDataURL(file);
@@ -51,8 +55,11 @@ function enableCanvasDragDrop() {
   });
 }
 
+// Enable drag & drop immediately
+enableCanvasDragDrop();
+
 // -------------------------
-// Save / Load map as JSON
+// Map Save / Load
 // -------------------------
 function saveMap() {
   const mapData = engine.entities.map((e) => ({
@@ -82,33 +89,15 @@ function loadMap(file) {
   reader.readAsText(file);
 }
 
-// -------------------------
-// Setup UI for map saving/loading
-// -------------------------
-function setupMapSaveLoad() {
-  const saveBtn = document.createElement("button");
-  saveBtn.textContent = "Save Map";
-  saveBtn.addEventListener("click", saveMap);
-  document.getElementById("map-editor").appendChild(saveBtn);
+// Map tab UI connections
+document.getElementById("save-map").addEventListener("click", saveMap);
 
-  const loadInput = document.createElement("input");
-  loadInput.type = "file";
-  loadInput.accept = ".json";
-  loadInput.addEventListener("change", (e) => {
-    if (e.target.files.length > 0) loadMap(e.target.files[0]);
-  });
-  document.getElementById("map-editor").appendChild(loadInput);
-}
-
-// -------------------------
-// Initialize everything
-// -------------------------
-document.getElementById("load-assets").addEventListener("click", () => {
-  loadDefaultAssets();
+document.getElementById("load-map").addEventListener("change", (e) => {
+  if (!e.target.files.length) return;
+  loadMap(e.target.files[0]);
 });
 
-enableCanvasDragDrop();
-setupMapSaveLoad();
-
-// Start the game loop
+// -------------------------
+// Start the Game Loop
+// -------------------------
 engine.start();

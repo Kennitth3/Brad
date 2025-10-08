@@ -7,35 +7,53 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div id="sidebar">
-    <h2>Game Engine</h2>
-    <button id="load-assets">Load Assets</button>
+  <div id="container">
+    <!-- Sidebar -->
+    <div id="sidebar">
+      <h2>Web Game Engine</h2>
 
-    <section id="player-editor">
-      <h3>Player Editor</h3>
-      <label>Speed: <input type="number" id="player-speed" value="5" /></label>
-      <label>Jump: <input type="number" id="player-jump" value="15" /></label>
-    </section>
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-button active" data-tab="player">Player</button>
+        <button class="tab-button" data-tab="map">Map</button>
+        <button class="tab-button" data-tab="assets">Assets</button>
+      </div>
 
-    <section id="uploads">
-  <h3>Upload Assets / Scripts</h3>
-  <label>Upload Images:
-    <input type="file" id="upload-assets" accept="image/*" multiple>
-  </label>
-  <label>Upload Scripts (.js):
-    <input type="file" id="upload-scripts" accept=".js" multiple>
-  </label>
-</section>
+      <!-- Tab Contents -->
+      <div id="tab-contents">
+        <!-- Player Editor -->
+        <div class="tab-content active" id="player">
+          <h3>Player Editor</h3>
+          <label>Speed: <input type="number" id="player-speed" value="5" /></label>
+          <label>Jump: <input type="number" id="player-jump" value="15" /></label>
+        </div>
 
+        <!-- Map Editor -->
+        <div class="tab-content" id="map">
+          <h3>Map Editor</h3>
+          <div id="asset-panel"></div>
+          <button id="save-map">Save Map</button>
+          <input type="file" id="load-map" accept=".json" />
+        </div>
 
-    <section id="map-editor">
-      <h3>Map Editor</h3>
-      <div id="asset-panel"></div>
-    </section>
+        <!-- Assets Upload -->
+        <div class="tab-content" id="assets">
+          <h3>Upload Assets / Scripts</h3>
+          <label>Images: <input type="file" id="upload-assets" accept="image/*" multiple></label>
+          <label>Scripts (.js): <input type="file" id="upload-scripts" accept=".js" multiple></label>
+        </div>
+      </div>
+
+      <!-- Load default assets -->
+      <button id="load-assets">Load Default Assets</button>
+    </div>
+
+    <!-- Canvas -->
+    <canvas id="game-canvas" width="800" height="600"></canvas>
   </div>
 
-  <canvas id="game-canvas" width="800" height="600"></canvas>
-
-  <script type="module" src="scripts/project.js"></script>
+  <script src="scripts/gameEngine.js"></script>
+  <script src="scripts/editor.js"></script>
+  <script src="scripts/project.js"></script>
 </body>
 </html>
