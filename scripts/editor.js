@@ -61,3 +61,43 @@ function setupDragAndDrop(engine) {
     });
   });
 }
+
+function setupFileUploads(engine) {
+  // Upload Images
+  const assetInput = document.getElementById("upload-assets");
+  assetInput.addEventListener("change", (e) => {
+    const files = Array.from(e.target.files);
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target.result;
+        const name = file.name.split(".")[0];
+        engine.assets[name] = img;
+
+        // Refresh asset panel
+        createMapEditor(engine);
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  // Upload Scripts
+  const scriptInput = document.getElementById("upload-scripts");
+  scriptInput.addEventListener("change", (e) => {
+    const files = Array.from(e.target.files);
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          // Dynamically evaluate the uploaded JS
+          eval(event.target.result);
+          console.log(`Script loaded: ${file.name}`);
+        } catch (err) {
+          console.error(`Error loading ${file.name}:`, err);
+        }
+      };
+      reader.readAsText(file);
+    });
+  });
+}

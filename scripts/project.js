@@ -1,22 +1,25 @@
-import { GameEngine } from "./gameEngine.js";
-import { createEditors } from "./editor.js";
+// Make sure GameEngine, createEditors, setupFileUploads are already loaded globally
+// from gameEngine.js and editor.js
 
+// Initialize engine
 const engine = new GameEngine();
 
-// Load images for map editor
+// Load default assets when user clicks button
 document.getElementById("load-assets").addEventListener("click", () => {
-  const assetList = [
-    { name: "player", path: "assets/pngtree-soccer-player-image_1200612.jpg" },
+  const defaultAssets = [
+    { name: "player", path: "assets/player.png" },
     { name: "grass", path: "assets/grass.png" },
     { name: "enemy", path: "assets/enemy.png" },
   ];
 
-  assetList.forEach((a) => engine.loadAsset(a.name, a.path));
+  defaultAssets.forEach((asset) => engine.loadAsset(asset.name, asset.path));
 
-  // Wait for images to load
+  // Wait a short time to ensure images load, then initialize editors
   setTimeout(() => {
     createEditors(engine);
+    setupFileUploads(engine); // Enable user uploads
   }, 500);
 });
 
+// Start the game loop
 engine.start();
