@@ -1,46 +1,41 @@
-class GameEngine {
-    constructor() {
-        this.canvas = document.getElementById('game-canvas');
-        this.context = this.canvas.getContext('2d');
-        this.entities = [];
-        this.assets = {};
-        this.scene = null;
-    }
+export class GameEngine {
+  constructor() {
+    this.canvas = document.getElementById("game-canvas");
+    this.ctx = this.canvas.getContext("2d");
+    this.entities = [];
+    this.assets = {};
+    this.tileSize = 64;
+  }
 
-    loadAsset(path) {
-        const img = new Image();
-        img.src = path;
-        this.assets[path] = img;
-    }
+  loadAsset(name, path) {
+    const img = new Image();
+    img.src = path;
+    this.assets[name] = img;
+  }
 
-    createEntity(type, properties) {
-        const entity = { type, properties };
-        this.entities.push(entity);
-    }
+  createEntity(type, x, y, assetName) {
+    this.entities.push({
+      type,
+      x,
+      y,
+      assetName,
+      draw: (ctx, assets) => {
+        const img = assets[assetName];
+        if (img) ctx.drawImage(img, x, y, 64, 64);
+      },
+    });
+  }
 
-    update() {
-        // Game loop logic (update entity positions, check collisions, etc.)
-        this.entities.forEach(entity => {
-            if (entity.update) entity.update();
-        });
-    }
+  render() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.entities.forEach((e) => e.draw(this.ctx, this.assets));
+  }
 
-    render() {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.entities.forEach(entity => {
-            if (entity.render) entity.render(this.context);
-        });
-    }
-
-    start() {
-        const gameLoop = () => {
-            this.update();
-            this.render();
-            requestAnimationFrame(gameLoop);
-        };
-        gameLoop();
-    }
+  start() {
+    const loop = () => {
+      this.render();
+      requestAnimationFrame(loop);
+    };
+    loop();
+  }
 }
-
-// Export the game engine class to be used in the main project
-export { GameEngine };

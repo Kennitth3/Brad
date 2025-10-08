@@ -1,19 +1,22 @@
-// Simulating loading assets dynamically
-function loadAssets() {
-    const engine = new GameEngine();
-    engine.loadAsset('assets/player.png');
-    engine.loadAsset('assets/enemy.png');
-}
+import { GameEngine } from "./gameEngine.js";
+import { createEditors } from "./editor.js";
 
-// Initialize Game Engine
-function initializeGameEngine() {
-    const engine = new GameEngine();
-    loadAssets();
+const engine = new GameEngine();
 
-    // Set up the player editor and map editor UI
-    createPlayerEditor();
-    createMapEditor();
+// Load images for map editor
+document.getElementById("load-assets").addEventListener("click", () => {
+  const assetList = [
+    { name: "player", path: "assets/pngtree-soccer-player-image_1200612.jpg" },
+    { name: "grass", path: "assets/grass.png" },
+    { name: "enemy", path: "assets/enemy.png" },
+  ];
 
-    // Start the game engine
-    engine.start();
-}
+  assetList.forEach((a) => engine.loadAsset(a.name, a.path));
+
+  // Wait for images to load
+  setTimeout(() => {
+    createEditors(engine);
+  }, 500);
+});
+
+engine.start();

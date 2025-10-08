@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Game Engine</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Game Engine</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <div id="game-container">
-        <div id="game-ui">
-            <button id="load-project">Load Project</button>
-            <div id="player-editor"></div>
-            <div id="map-editor"></div>
-            <textarea id="code-editor"></textarea>
-        </div>
-        <canvas id="game-canvas"></canvas>
-    </div>
-    <script src="scripts/gameEngine.js"></script>
-    <script src="scripts/editor.js"></script>
-    <script src="scripts/project.js"></script>
-    <script>
-        document.getElementById('load-project').addEventListener('click', () => {
-            loadProjectFolder(); // Function to load project files
-        });
-        initializeGameEngine(); // Initialize the game engine
-    </script>
+  <div id="sidebar">
+    <h2>Game Engine</h2>
+    <button id="load-assets">Load Assets</button>
+
+    <section id="player-editor">
+      <h3>Player Editor</h3>
+      <label>Speed: <input type="number" id="player-speed" value="5" /></label>
+      <label>Jump: <input type="number" id="player-jump" value="15" /></label>
+    </section>
+
+    <section id="map-editor">
+      <h3>Map Editor</h3>
+      <div id="asset-panel"></div>
+    </section>
+  </div>
+
+  <canvas id="game-canvas" width="800" height="600"></canvas>
+
+  <script type="module" src="scripts/project.js"></script>
 </body>
 </html>

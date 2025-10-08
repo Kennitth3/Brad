@@ -1,41 +1,51 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    height: 100vh;
+  margin: 0;
+  display: flex;
+  font-family: Arial, sans-serif;
+  background: #1e1e1e;
+  color: white;
 }
 
-#game-container {
-    display: flex;
-    width: 100%;
-}
-
-#game-ui {
-    width: 300px;
-    background: #2f2f2f;
-    padding: 20px;
-    color: white;
-    box-sizing: border-box;
+#sidebar {
+  width: 250px;
+  background: #2c2c2c;
+  padding: 15px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 #game-canvas {
-    flex-grow: 1;
-    background: #000;
+  flex-grow: 1;
+  background: #000;
+  border-left: 2px solid #444;
 }
 
-#player-editor, #map-editor {
-    margin-top: 20px;
-    background: #444;
-    padding: 10px;
+h2, h3 {
+  margin: 0 0 10px;
+  color: #9cdcfe;
 }
 
-textarea {
-    width: 100%;
-    height: 200px;
-    margin-top: 20px;
-    background: #333;
-    color: white;
-    border: none;
-    padding: 10px;
+#asset-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 60px);
+  gap: 10px;
+}
+
+.asset {
+  width: 60px;
+  height: 60px;
+  border: 1px solid #555;
+  cursor: grab;
+  background-size: cover;
+  background-position: center;
+}
+.asset:active {
+  cursor: grabbing;
+}
+
+input {
+  width: 80%;
+  margin-top: 5px;
 }
