@@ -17,8 +17,8 @@ function loadDefaultAssets() {
 
   // Wait a short time to ensure images load
   setTimeout(() => {
-    createEditors(engine);       // Setup player & map editors
-    setupFileUploads(engine);    // Setup file upload inputs
+    window.createEditors(engine);       // Setup player & map editors
+    window.setupFileUploads(engine);    // Setup file upload inputs
   }, 500);
 }
 
@@ -48,7 +48,7 @@ function enableCanvasDragDrop() {
         engine.assets[name] = img;
 
         // Refresh the map editor asset panel
-        createEditors(engine);
+        window.createEditors(engine);
       };
       reader.readAsDataURL(file);
     });
