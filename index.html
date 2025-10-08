@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Game Engine</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="game-ui">
+            <button id="load-project">Load Project</button>
+            <div id="player-editor"></div>
+            <div id="map-editor"></div>
+            <textarea id="code-editor"></textarea>
+        </div>
+        <canvas id="game-canvas"></canvas>
+    </div>
+    <script src="scripts/gameEngine.js"></script>
+    <script src="scripts/editor.js"></script>
+    <script src="scripts/project.js"></script>
+    <script>
+        document.getElementById('load-project').addEventListener('click', () => {
+            loadProjectFolder(); // Function to load project files
+        });
+        initializeGameEngine(); // Initialize the game engine
+    </script>
+</body>
+</html>
